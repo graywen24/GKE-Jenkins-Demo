@@ -41,7 +41,7 @@ spec:
       steps {
         container('golang') {
           sh """
-            echo "====== here is for Testing ===="
+            echo "==== here is TEST==="
             ln -s `pwd` /go/src/sample-app
             cd /go/src/sample-app
             go test
@@ -49,7 +49,7 @@ spec:
         }
       }
     }
-    stage('Build and push image with Google cloud Container Builder') {
+    stage('Build and push image with google cloud Container Builder') {
       when { 
         not { branch 'dev' } 
       } 
@@ -60,13 +60,12 @@ spec:
       }
     }
     stage('Deploy Staging') {
-      // Canary staging
+      // staging branch
       when { branch 'staging' }
       steps {
         container('kubectl') {
-          // Change deployed image in staging to the one we just built
-          echo "staging env and create namespace for it"
-          sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
+          // Change deployed image in canary to the one we just built
+          sh("kubectl get ns ${env.BRANCH_NAME} ||kubectl create ns ${env.BRANCH_NAME}") 
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/${env.BRANCH_NAME}/*.yaml")
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/${env.BRANCH_NAME}/")
@@ -80,6 +79,7 @@ spec:
       steps{
         container('kubectl') {
         // Change deployed image in canary to the one we just built
+          sh("kubectl get ns production ||kubectl create ns production") //check NS first if no then create namespace production
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/production/")
@@ -94,19 +94,8 @@ spec:
         not { branch 'staging' }
       } 
       steps {
-        //container('kubectl') {
-          echo "just show dev display here"
-          // Create namespace if it doesn't exist
-          //sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-          // Don't use public load balancing for development branches
-          //sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
-          //sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
-          //sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
-          //sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
-          //echo 'To access your environment run `kubectl proxy`'
-          //echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
-        //}
-      }     
-    }
-  }
-}
+          echo ' here is only display for DEV'
+        }
+      }
+    } 
+ }

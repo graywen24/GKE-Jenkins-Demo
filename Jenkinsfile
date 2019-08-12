@@ -55,9 +55,9 @@ spec:
         }
       }
     }
-    stage('Deploy Canary') {
+    stage('Deploy Staging') {
       // Canary branch
-      when { branch 'canary' }
+      when { branch 'staging' }
       steps {
         container('kubectl') {
           // Change deployed image in canary to the one we just built
@@ -85,13 +85,13 @@ spec:
       // Developer Branches
       when { 
         not { branch 'master' } 
-        not { branch 'canary' }
+        not { branch 'staging' }
       } 
       steps {
-        container('kubectl') {
+        //container('kubectl') {
           // Create namespace if it doesn't exist
           echo ' here is only display for DEV'
-        }
+        //}
       }
     } 
   }

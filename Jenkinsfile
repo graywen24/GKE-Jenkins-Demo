@@ -83,7 +83,11 @@ spec:
     }
     stage('Deploy Dev') {
       // Developer Branches
-	sh("echo 'here is for DEV display'")
-      } 
-    }
+	     steps{
+          container('kubectl') {
+	     sh("echo 'here is for DEV display'")
+        }
+      }
+    } 
   }
+}

@@ -50,6 +50,9 @@ spec:
       }
     }
     stage('Build and push image with Google cloud Container Builder') {
+      when { 
+        not { branch 'dev' } 
+      } 
       steps {
         container('gcloud') {
           sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."

@@ -41,6 +41,7 @@ spec:
       steps {
         container('golang') {
           sh """
+            echo "==== here is TEST==="
             ln -s `pwd` /go/src/sample-app
             cd /go/src/sample-app
             go test
@@ -55,16 +56,17 @@ spec:
         }
       }
     }
-    stage('Deploy Canary') {
-      // Canary branch
-      when { branch 'canary' }
+    stage('Deploy Staging') {
+      // staging branch
+      when { branch 'staging' }
       steps {
         container('kubectl') {
           // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
-          sh("kubectl --namespace=production apply -f k8s/services/")
-          sh("kubectl --namespace=production apply -f k8s/canary/")
-          sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+          sh("kubectl get ns ${env.BRANCH_NAME} ||kubectl create ns ${env.BRANCH_NAME}") 
+          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/${env.BRANCH_NAME}/*.yaml")
+          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
+          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/${env.BRANCH_NAME}/")
+          sh("echo http://`kubectl --namespace=${env.BRANCH_NAME} get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         } 
       }
     }
@@ -86,7 +88,7 @@ spec:
       // Developer Branches
       when { 
         not { branch 'master' } 
-        not { branch 'canary' }
+        not { branch 'staging' }
       } 
       steps {
           echo ' here is only display for DEV'

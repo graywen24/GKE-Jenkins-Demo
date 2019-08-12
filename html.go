@@ -35,9 +35,9 @@ const (
 
 
 
-<div class="card orange">
+<div class="card blue">
 <div class="card-content white-text">
-<div class="card-title">+++ this is staging page+++Backend that serviced this request</div>
+<div class="card-title"> this is production +++Backend that serviced this request</div>
 
 </div>
 <div class="card-content white">
@@ -82,7 +82,7 @@ const (
 
 <div class="card red">
 <div class="card-content white-text">
-<div class="card-title">!!!! this staging page++++++Proxy that handled this request</div>
+<div class="card-title">!!!! this produciotn page++++++Proxy that handled this request</div>
 </div>
 <div class="card-content white">
 <table class="bordered">

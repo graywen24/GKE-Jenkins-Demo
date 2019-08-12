@@ -55,16 +55,18 @@ spec:
         }
       }
     }
-    stage('Deploy Canary') {
+    stage('Deploy Staging') {
       // Canary branch
-      when { branch 'canary' }
+      when { branch 'staging' }
       steps {
         container('kubectl') {
-          // Change deployed image in canary to the one we just built
+          // Change deployed image in staging to the one we just built
+          echo "staging env and create namespace for it"
+          sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
-          sh("kubectl --namespace=production apply -f k8s/services/")
-          sh("kubectl --namespace=production apply -f k8s/canary/")
-          sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
+          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/canary/")
+          sh("echo http://`kubectl --namespace=${env.BRANCH_NAME} get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         } 
       }
     }

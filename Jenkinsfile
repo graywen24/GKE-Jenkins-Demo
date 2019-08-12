@@ -41,6 +41,7 @@ spec:
       steps {
         container('golang') {
           sh """
+            echo "====== here is for Testing ===="
             ln -s `pwd` /go/src/sample-app
             cd /go/src/sample-app
             go test
@@ -48,7 +49,7 @@ spec:
         }
       }
     }
-    stage('Build and push image with Container Builder') {
+    stage('Build and push image with Google cloud Container Builder') {
       steps {
         container('gcloud') {
           sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
@@ -56,16 +57,16 @@ spec:
       }
     }
     stage('Deploy Staging') {
-      // Canary branch
+      // Canary staging
       when { branch 'staging' }
       steps {
         container('kubectl') {
           // Change deployed image in staging to the one we just built
           echo "staging env and create namespace for it"
           sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
+          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/${env.BRANCH_NAME}/*.yaml")
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
-          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/canary/")
+          sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/${env.BRANCH_NAME}/")
           sh("echo http://`kubectl --namespace=${env.BRANCH_NAME} get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         } 
       }
@@ -87,10 +88,10 @@ spec:
       // Developer Branches
       when { 
         not { branch 'master' } 
-        not { branch 'canary' }
+        not { branch 'staging' }
       } 
       steps {
-        container('kubectl') {
+        //container('kubectl') {
           echo "just show dev display here"
           // Create namespace if it doesn't exist
           //sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
@@ -101,7 +102,7 @@ spec:
           //sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
           //echo 'To access your environment run `kubectl proxy`'
           //echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
-        }
+        //}
       }     
     }
   }

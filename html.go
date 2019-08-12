@@ -34,9 +34,11 @@ const (
 <div class="col s8">
 
 
-<div class="card purple">
+
+<div class="card orange">
 <div class="card-content white-text">
-<div class="card-title">this is from master branch+++++++Backend that serviced this request</div>
+<div class="card-title">+++ this is staging page+++Backend that serviced this request</div>
+
 </div>
 <div class="card-content white">
 <table class="bordered">
@@ -78,9 +80,9 @@ const (
 </div>
 </div>
 
-<div class="card blue">
+<div class="card red">
 <div class="card-content white-text">
-<div class="card-title">Proxy that handled this request</div>
+<div class="card-title">!!!! this staging page++++++Proxy that handled this request</div>
 </div>
 <div class="card-content white">
 <table class="bordered">

@@ -4,6 +4,15 @@
 ![alt text](https://github.com/graywen24/GKE-Jenkins-Demo/blob/master/bkp/CICI%20Design%20V2.png)
 
 
+<h2>kubectl Cheat Sheet</h2>
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration
+
+<h2>GKE Design</h2>
+Where is the master node? All using LB???
+<br>
+https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture
+
+
 <h2> Reference or fork from </h2>
 #jenkins setup
 https://cloud.google.com/solutions/continuous-delivery-jenkins-kubernetes-engine

@@ -1,7 +1,7 @@
 # Studying Use
 <h1> Overview Design </h1>
 
-![alt text](https://github.com/graywen24/GKE-Jenkins-Demo/blob/master/bkp/CICI%20Design%20V2.png)
+![alt text](https://github.com/graywen24/GKE-Jenkins-Demo/blob/master/bkp/GCP%20playground%20Design%20V2%20.png)
 
 
 <h2>kubectl Cheat Sheet</h2>

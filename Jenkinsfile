@@ -6,7 +6,7 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
 pipeline {
   agent {
     kubernetes {
-      label 'my-app'
+      label 'jenkins-demo'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1

@@ -40,5 +40,5 @@ Deploy a new version of your app
 https://cloud.google.com/solutions/continuous-delivery-spinnaker-kubernetes-engine
 https://www.mirantis.com/blog/how-to-deploy-spinnaker-on-kubernetes-a-quicker-and-dirtier-guide/
 
-<h3>other reading collection</h3>
+<h2>other reading collection</h2>
 https://liveramp.com/engineering/migrating-a-big-data-environment-to-the-cloud-part-1/

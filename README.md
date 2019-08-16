@@ -39,3 +39,6 @@ Deploy a new version of your app
 <h3> To fix it Spinnaker </h3>
 https://cloud.google.com/solutions/continuous-delivery-spinnaker-kubernetes-engine
 https://www.mirantis.com/blog/how-to-deploy-spinnaker-on-kubernetes-a-quicker-and-dirtier-guide/
+
+<h3>other reading collection</h3>
+https://liveramp.com/engineering/migrating-a-big-data-environment-to-the-cloud-part-1/
